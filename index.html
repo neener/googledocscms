@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+  <body>
+  	<h1> My BALLS index </h1>
+
+   <div id="content"></div>
+
+   <script id="balls-template" type="text/x-handlebars-template">
+   	<div class="entry">
+   		<h2>{{name}}</h2>
+   		<h3>Published: {{dateAdded}} , {{timeAdded}}</h3>
+   		<div class="body">
+   			<img src="{{image}}" alt="" class="head">
+   		</div>
+   	</div>
+   	</script>
+
+   	<script type="text/javascript" src="js/handlebars-latest.js"></script>
+   	<script type="text/javascript" src="js/bower_components/jquery/dist/jquery.js"></script>
+   	<script type="text/javascript" src="js/tabletop.js"></script>
+   	<script type="text/javascript">
+   		var public_spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1Dtya8ZfYah_6PrhSv3YtfmnQQtaqaYbwGM3Ldt4Pa7U/pubhtml';
+
+   		$(document).ready( function() {
+   			Tabletop.init( { key: public_spreadsheet_url,
+   							 callback: showInfo,
+   							 parseNumbers: true } );
+   	});
+
+   	function showInfo(data, tabletop) {
+   		var source = $("#balls-template").html();
+   		var template = Handlebars.compile(source);
+
+   		$.each( tabletop.sheets("balls").all(), function(i, ball) {
+   			var html = template(ball);
+   			$("#content").append(html);
+   		});
+   	}
+
+   	document.write("The published spreadsheet is located at <a target='_new' href='" + public_spreadsheet_url + "'>" + public_spreadsheet_url + "</a>");
+   </script>
+  </body>
+</html>
